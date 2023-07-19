@@ -2,7 +2,8 @@ package vul_dao
 
 import (
 	"context"
-	"github.com/scagogogo/sca-base-module-vuls/pkg/domain"
+	"github.com/scagogogo/sca-base-module-vuls/pkg/models"
+
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -19,7 +20,7 @@ func NewVulMysqlDao(gorm *gorm.DB) *VulMysqlDao {
 	}
 }
 
-func (x *VulMysqlDao) Create(ctx context.Context, vul *domain.Vul, codes []*domain.VulCode) error {
+func (x *VulMysqlDao) Create(ctx context.Context, vul *models.Vul, codes []*models.VulCode) error {
 	// 在一个事务中更新，尽可能保证外键的一致性
 	return x.gorm.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 
@@ -41,7 +42,7 @@ func (x *VulMysqlDao) Create(ctx context.Context, vul *domain.Vul, codes []*doma
 	})
 }
 
-func (x *VulMysqlDao) Update(ctx context.Context, vul *domain.Vul, codes []*domain.VulCode) error {
+func (x *VulMysqlDao) Update(ctx context.Context, vul *models.Vul, codes []*models.VulCode) error {
 	// 在一个事务中更新，尽可能保证外键的一致性
 	return x.gorm.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 
@@ -63,7 +64,7 @@ func (x *VulMysqlDao) Update(ctx context.Context, vul *domain.Vul, codes []*doma
 	})
 }
 
-func (x *VulMysqlDao) Upsert(ctx context.Context, vul *domain.Vul, codes []*domain.VulCode) error {
+func (x *VulMysqlDao) Upsert(ctx context.Context, vul *models.Vul, codes []*models.VulCode) error {
 	// 在一个事务中更新，尽可能保证外键的一致性
 	return x.gorm.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 
@@ -108,18 +109,18 @@ func (x *VulMysqlDao) Delete(ctx context.Context, vulIds ...string) error {
 	return x.gorm.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 
 		// 删除漏洞信息
-		db := tx.Where("vul_id in ?", vulIds).Delete(&domain.Vul{})
+		db := tx.Where("vul_id in ?", vulIds).Delete(&models.Vul{})
 		if db.Error != nil {
 			return db.Error
 		}
 
 		// 删除漏洞的编号信息
-		return tx.Where("vul_id in ?", vulIds).Delete(&domain.VulCode{}).Error
+		return tx.Where("vul_id in ?", vulIds).Delete(&models.VulCode{}).Error
 	})
 }
 
-func (x *VulMysqlDao) Find(ctx context.Context, vulId string) (*domain.Vul, error) {
-	var r *domain.Vul
+func (x *VulMysqlDao) Find(ctx context.Context, vulId string) (*models.Vul, error) {
+	var r *models.Vul
 	err := x.gorm.WithContext(ctx).Model(&r).Where("vul_id = ?", vulId).Scan(&r).Error
 	if err != nil {
 		return nil, err
@@ -128,9 +129,9 @@ func (x *VulMysqlDao) Find(ctx context.Context, vulId string) (*domain.Vul, erro
 	}
 }
 
-func (x *VulMysqlDao) FindMany(ctx context.Context, vulIds ...string) ([]*domain.Vul, error) {
-	var slice []*domain.Vul
-	err := x.gorm.WithContext(ctx).Model(&domain.Vul{}).Where("vul_id in ?", vulIds).Scan(&slice).Error
+func (x *VulMysqlDao) FindMany(ctx context.Context, vulIds ...string) ([]*models.Vul, error) {
+	var slice []*models.Vul
+	err := x.gorm.WithContext(ctx).Model(&models.Vul{}).Where("vul_id in ?", vulIds).Scan(&slice).Error
 	if err != nil {
 		return nil, err
 	} else {
@@ -138,9 +139,9 @@ func (x *VulMysqlDao) FindMany(ctx context.Context, vulIds ...string) ([]*domain
 	}
 }
 
-func (x *VulMysqlDao) LoadAll(ctx context.Context) ([]*domain.Vul, error) {
-	var slice []*domain.Vul
-	err := x.gorm.WithContext(ctx).Model(&domain.Vul{}).Scan(&slice).Error
+func (x *VulMysqlDao) LoadAll(ctx context.Context) ([]*models.Vul, error) {
+	var slice []*models.Vul
+	err := x.gorm.WithContext(ctx).Model(&models.Vul{}).Scan(&slice).Error
 	if err != nil {
 		return nil, err
 	} else {
@@ -148,7 +149,7 @@ func (x *VulMysqlDao) LoadAll(ctx context.Context) ([]*domain.Vul, error) {
 	}
 }
 
-func (x *VulMysqlDao) CreateCodes(ctx context.Context, vulId string, codes []*domain.VulCode) error {
+func (x *VulMysqlDao) CreateCodes(ctx context.Context, vulId string, codes []*models.VulCode) error {
 	return x.gorm.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		for _, code := range codes {
 			err := tx.Model(&code).Create(&code).Error
@@ -160,12 +161,12 @@ func (x *VulMysqlDao) CreateCodes(ctx context.Context, vulId string, codes []*do
 	})
 }
 
-func (x *VulMysqlDao) ReplaceCodes(ctx context.Context, vulId string, codes []*domain.VulCode) error {
+func (x *VulMysqlDao) ReplaceCodes(ctx context.Context, vulId string, codes []*models.VulCode) error {
 	return x.gorm.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 
 		// 计算出需要删除的编号
-		var existsCodes []*domain.VulCode
-		err := tx.Model(&domain.VulCode{}).Where("vul_id = ?", vulId).Scan(&existsCodes).Error
+		var existsCodes []*models.VulCode
+		err := tx.Model(&models.VulCode{}).Where("vul_id = ?", vulId).Scan(&existsCodes).Error
 		if err != nil {
 			return err
 		}
@@ -181,7 +182,7 @@ func (x *VulMysqlDao) ReplaceCodes(ctx context.Context, vulId string, codes []*d
 			}
 		}
 		// 删除多余的编号
-		err = tx.Where("code in ?", needDeleteCodes).Delete(&domain.VulCode{}).Error
+		err = tx.Where("code in ?", needDeleteCodes).Delete(&models.VulCode{}).Error
 		if err != nil {
 			return err
 		}
@@ -205,7 +206,7 @@ func (x *VulMysqlDao) ReplaceCodes(ctx context.Context, vulId string, codes []*d
 	})
 }
 
-func (x *VulMysqlDao) UpsertCodes(ctx context.Context, vulId string, codes []*domain.VulCode) error {
+func (x *VulMysqlDao) UpsertCodes(ctx context.Context, vulId string, codes []*models.VulCode) error {
 	return x.gorm.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		for _, code := range codes {
 			err := x.gorm.Model(&code).Clauses(clause.OnConflict{
@@ -225,9 +226,9 @@ func (x *VulMysqlDao) UpsertCodes(ctx context.Context, vulId string, codes []*do
 	})
 }
 
-func (x *VulMysqlDao) FindCodes(ctx context.Context, vulIds ...string) ([]*domain.VulCode, error) {
-	var slice []*domain.VulCode
-	err := x.gorm.WithContext(ctx).Model(&domain.VulCode{}).Where("vul_id in ?", vulIds).Scan(&slice).Error
+func (x *VulMysqlDao) FindCodes(ctx context.Context, vulIds ...string) ([]*models.VulCode, error) {
+	var slice []*models.VulCode
+	err := x.gorm.WithContext(ctx).Model(&models.VulCode{}).Where("vul_id in ?", vulIds).Scan(&slice).Error
 	if err != nil {
 		return nil, err
 	} else {
@@ -236,17 +237,17 @@ func (x *VulMysqlDao) FindCodes(ctx context.Context, vulIds ...string) ([]*domai
 }
 
 func (x *VulMysqlDao) DeleteCodeByVulId(ctx context.Context, vulIds ...string) (int64, error) {
-	tx := x.gorm.WithContext(ctx).Where("vul_id in ?", vulIds).Delete(&domain.VulCode{})
+	tx := x.gorm.WithContext(ctx).Where("vul_id in ?", vulIds).Delete(&models.VulCode{})
 	return tx.RowsAffected, tx.Error
 }
 
 func (x *VulMysqlDao) DeleteCode(ctx context.Context, code string) error {
-	return x.gorm.WithContext(ctx).Where("code = ?", code).Delete(&domain.VulCode{}).Error
+	return x.gorm.WithContext(ctx).Where("code = ?", code).Delete(&models.VulCode{}).Error
 }
 
-func (x *VulMysqlDao) LoadAllCodes(ctx context.Context) ([]*domain.VulCode, error) {
-	var slice []*domain.VulCode
-	err := x.gorm.WithContext(ctx).Model(&domain.VulCode{}).Scan(&slice).Error
+func (x *VulMysqlDao) LoadAllCodes(ctx context.Context) ([]*models.VulCode, error) {
+	var slice []*models.VulCode
+	err := x.gorm.WithContext(ctx).Model(&models.VulCode{}).Scan(&slice).Error
 	if err != nil {
 		return nil, err
 	} else {

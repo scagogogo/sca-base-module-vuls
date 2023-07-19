@@ -2,13 +2,14 @@ package maven_component_vul_dao
 
 import (
 	"github.com/golang-infrastructure/go-pointer"
-	"github.com/scagogogo/sca-base-module-vuls/pkg/domain"
+	"github.com/scagogogo/sca-base-module-vuls/pkg/models"
+
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestUpsertMavenComponentVul(t *testing.T) {
-	err := UpsertMavenComponentVul(&domain.MavenComponentVul{
+	err := UpsertMavenComponentVul(&models.MavenComponentVul{
 		GroupId:    "test-group-id",
 		ArtifactId: "test-artifact-id",
 		Version:    "test-version",
@@ -21,7 +22,7 @@ func TestUpsertMavenComponentVul(t *testing.T) {
 
 func TestFindMavenComponentVul(t *testing.T) {
 
-	_ = UpsertMavenComponentVul(&domain.MavenComponentVul{
+	_ = UpsertMavenComponentVul(&models.MavenComponentVul{
 		GroupId:    "test-group-id",
 		ArtifactId: "test-artifact-id",
 		Version:    "test-version",

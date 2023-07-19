@@ -5,8 +5,10 @@ go 1.19
 require (
 	github.com/golang-infrastructure/go-pointer v0.0.4
 	github.com/scagogogo/osv-schema v0.0.1
+	github.com/scagogogo/sca-base-module-config v0.0.0-20230712110232-02d4103517c9
 	github.com/scagogogo/sca-base-module-dao v0.0.0-20230712110723-f53eff3ea25e
 	github.com/stretchr/testify v1.8.4
+	golang.org/x/text v0.11.0
 	gorm.io/gorm v1.25.2
 )
 
@@ -25,7 +27,6 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/scagogogo/sca-base-module-config v0.0.0-20230712110232-02d4103517c9 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
@@ -33,7 +34,6 @@ require (
 	github.com/spf13/viper v1.16.0 // indirect
 	github.com/subosito/gotenv v1.4.2 // indirect
 	golang.org/x/sys v0.10.0 // indirect
-	golang.org/x/text v0.11.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/driver/mysql v1.5.1 // indirect

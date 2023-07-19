@@ -2,7 +2,7 @@ package db
 
 import (
 	"github.com/scagogogo/sca-base-module-dao/mysql"
-	"github.com/scagogogo/sca-base-module-vuls/pkg/domain"
+	"github.com/scagogogo/sca-base-module-vuls/pkg/models"
 )
 
 func init() {
@@ -11,16 +11,16 @@ func init() {
 		return
 	}
 
-	err := mysql.Gorm.AutoMigrate(&domain.ComponentVul{})
+	err := mysql.Gorm.AutoMigrate(&models.ComponentVul{})
 	if err != nil {
 		panic(err)
 	}
 
-	err = mysql.Gorm.AutoMigrate(&domain.Vul{})
+	err = mysql.Gorm.AutoMigrate(&models.Vul{})
 	if err != nil {
 		panic(err)
 	}
-	err = mysql.Gorm.AutoMigrate(&domain.VulCode{})
+	err = mysql.Gorm.AutoMigrate(&models.VulCode{})
 	if err != nil {
 		panic(err)
 	}

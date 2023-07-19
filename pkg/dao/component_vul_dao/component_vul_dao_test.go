@@ -3,7 +3,8 @@ package component_vul_dao
 import (
 	"context"
 	"github.com/golang-infrastructure/go-pointer"
-	"github.com/scagogogo/sca-base-module-vuls/pkg/domain"
+	"github.com/scagogogo/sca-base-module-vuls/pkg/models"
+
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -14,8 +15,8 @@ var (
 	testVulId   = "test-vul-id"
 )
 
-func buildComponentVul() *domain.ComponentVul {
-	return &domain.ComponentVul{
+func buildComponentVul() *models.ComponentVul {
+	return &models.ComponentVul{
 		Name:       testName,
 		Version:    testVersion,
 		VulId:      testVulId,

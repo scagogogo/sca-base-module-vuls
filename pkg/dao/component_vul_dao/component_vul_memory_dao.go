@@ -5,12 +5,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/scagogogo/sca-base-module-vuls/pkg/domain"
+	"github.com/scagogogo/sca-base-module-vuls/pkg/models"
 )
 
 type ComponentVulMemoryDao struct {
-	// map[组件name]map[组件版本]map[漏洞id]*domain.ComponentVul
-	db map[string]map[string]map[string]*domain.ComponentVul
+	// map[组件name]map[组件版本]map[漏洞id]*models.ComponentVul
+	db map[string]map[string]map[string]*models.ComponentVul
 }
 
 var _ ComponentVulDao = &ComponentVulMemoryDao{}
@@ -18,7 +18,7 @@ var _ ComponentVulDao = &ComponentVulMemoryDao{}
 // NewComponentVulMemoryDaoFromJsonLine 从jsonline文件中创建
 func NewComponentVulMemoryDaoFromJsonLine(ctx context.Context, jsonLineBytes []byte) (*ComponentVulMemoryDao, error) {
 	x := &ComponentVulMemoryDao{
-		db: make(map[string]map[string]map[string]*domain.ComponentVul, 0),
+		db: make(map[string]map[string]map[string]*models.ComponentVul, 0),
 	}
 	split := bytes.Split(jsonLineBytes, []byte("\n"))
 	for _, lineBytes := range split {
@@ -26,7 +26,7 @@ func NewComponentVulMemoryDaoFromJsonLine(ctx context.Context, jsonLineBytes []b
 		if len(lineBytes) == 0 {
 			continue
 		}
-		r := &domain.ComponentVul{}
+		r := &models.ComponentVul{}
 		err := json.Unmarshal(lineBytes, &r)
 		if err != nil {
 			return nil, err
@@ -39,26 +39,26 @@ func NewComponentVulMemoryDaoFromJsonLine(ctx context.Context, jsonLineBytes []b
 	return x, nil
 }
 
-func (x *ComponentVulMemoryDao) ensureNameVulExists(name string) map[string]map[string]*domain.ComponentVul {
+func (x *ComponentVulMemoryDao) ensureNameVulExists(name string) map[string]map[string]*models.ComponentVul {
 	nameVuls, exists := x.db[name]
 	if !exists {
-		nameVuls = make(map[string]map[string]*domain.ComponentVul)
+		nameVuls = make(map[string]map[string]*models.ComponentVul)
 		x.db[name] = nameVuls
 	}
 	return nameVuls
 }
 
-func (x *ComponentVulMemoryDao) ensureVersionVulExists(name, version string) map[string]*domain.ComponentVul {
+func (x *ComponentVulMemoryDao) ensureVersionVulExists(name, version string) map[string]*models.ComponentVul {
 	nameVuls := x.ensureNameVulExists(name)
 	versionVuls, exists := nameVuls[version]
 	if !exists {
-		versionVuls = make(map[string]*domain.ComponentVul, 0)
+		versionVuls = make(map[string]*models.ComponentVul, 0)
 		nameVuls[version] = versionVuls
 	}
 	return versionVuls
 }
 
-func (x *ComponentVulMemoryDao) Create(ctx context.Context, cv *domain.ComponentVul) error {
+func (x *ComponentVulMemoryDao) Create(ctx context.Context, cv *models.ComponentVul) error {
 	versionVuls := x.ensureVersionVulExists(cv.Name, cv.Version)
 	_, exists := versionVuls[cv.VulId]
 	if exists {
@@ -68,7 +68,7 @@ func (x *ComponentVulMemoryDao) Create(ctx context.Context, cv *domain.Component
 	return nil
 }
 
-func (x *ComponentVulMemoryDao) Update(ctx context.Context, cv *domain.ComponentVul) error {
+func (x *ComponentVulMemoryDao) Update(ctx context.Context, cv *models.ComponentVul) error {
 	versionVuls := x.ensureVersionVulExists(cv.Name, cv.Version)
 	_, exists := versionVuls[cv.VulId]
 	if !exists {
@@ -79,15 +79,15 @@ func (x *ComponentVulMemoryDao) Update(ctx context.Context, cv *domain.Component
 	return nil
 }
 
-func (x *ComponentVulMemoryDao) Upsert(ctx context.Context, cv *domain.ComponentVul) error {
+func (x *ComponentVulMemoryDao) Upsert(ctx context.Context, cv *models.ComponentVul) error {
 	versionVuls := x.ensureVersionVulExists(cv.Name, cv.Version)
 	versionVuls[cv.VulId] = cv
 	return nil
 }
 
-func (x *ComponentVulMemoryDao) FindByComponentName(ctx context.Context, componentName string) ([]*domain.ComponentVul, error) {
+func (x *ComponentVulMemoryDao) FindByComponentName(ctx context.Context, componentName string) ([]*models.ComponentVul, error) {
 	nameVuls := x.ensureNameVulExists(componentName)
-	slice := make([]*domain.ComponentVul, 0)
+	slice := make([]*models.ComponentVul, 0)
 	for _, versionVuls := range nameVuls {
 		for _, vul := range versionVuls {
 			slice = append(slice, vul)
@@ -96,9 +96,9 @@ func (x *ComponentVulMemoryDao) FindByComponentName(ctx context.Context, compone
 	return slice, nil
 }
 
-func (x *ComponentVulMemoryDao) Find(ctx context.Context, componentName, componentVersion string) ([]*domain.ComponentVul, error) {
+func (x *ComponentVulMemoryDao) Find(ctx context.Context, componentName, componentVersion string) ([]*models.ComponentVul, error) {
 	versionVuls := x.ensureVersionVulExists(componentName, componentVersion)
-	slice := make([]*domain.ComponentVul, 0)
+	slice := make([]*models.ComponentVul, 0)
 	for _, vul := range versionVuls {
 		slice = append(slice, vul)
 	}
@@ -143,8 +143,8 @@ func (x *ComponentVulMemoryDao) DeleteByComponentNameAndVersion(ctx context.Cont
 	return int64(c), nil
 }
 
-func (x *ComponentVulMemoryDao) LoadAll(ctx context.Context) ([]*domain.ComponentVul, error) {
-	slice := make([]*domain.ComponentVul, 0)
+func (x *ComponentVulMemoryDao) LoadAll(ctx context.Context) ([]*models.ComponentVul, error) {
+	slice := make([]*models.ComponentVul, 0)
 	for _, nameVul := range x.db {
 		for _, versionVul := range nameVul {
 			for _, vul := range versionVul {

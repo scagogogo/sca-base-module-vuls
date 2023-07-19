@@ -2,26 +2,26 @@ package component_vul_dao
 
 import (
 	"context"
-	"github.com/scagogogo/sca-base-module-vuls/pkg/domain"
+	"github.com/scagogogo/sca-base-module-vuls/pkg/models"
 )
 
 // ComponentVulDao 组件漏洞dao
 type ComponentVulDao interface {
 
 	// Create 保存组件漏洞信息
-	Create(ctx context.Context, cv *domain.ComponentVul) error
+	Create(ctx context.Context, cv *models.ComponentVul) error
 
 	// Update 更新组件漏洞
-	Update(ctx context.Context, cv *domain.ComponentVul) error
+	Update(ctx context.Context, cv *models.ComponentVul) error
 
 	// Upsert 组件漏洞存在的话则更新，否则插入
-	Upsert(ctx context.Context, cv *domain.ComponentVul) error
+	Upsert(ctx context.Context, cv *models.ComponentVul) error
 
 	// FindByComponentName 根据组件名称查询上面的所有漏洞
-	FindByComponentName(ctx context.Context, componentName string) ([]*domain.ComponentVul, error)
+	FindByComponentName(ctx context.Context, componentName string) ([]*models.ComponentVul, error)
 
 	// Find 根据组件名字和版本查询漏洞
-	Find(ctx context.Context, componentName, componentVersion string) ([]*domain.ComponentVul, error)
+	Find(ctx context.Context, componentName, componentVersion string) ([]*models.ComponentVul, error)
 
 	// DeleteByVulId 根据漏洞ID删除组件漏洞
 	DeleteByVulId(ctx context.Context, vulId string) (int64, error)
@@ -36,5 +36,5 @@ type ComponentVulDao interface {
 	DeleteByComponentNameAndVersion(ctx context.Context, componentName, componentVersion string) (int64, error)
 
 	// LoadAll 加载所有的组件漏洞
-	LoadAll(ctx context.Context) ([]*domain.ComponentVul, error)
+	LoadAll(ctx context.Context) ([]*models.ComponentVul, error)
 }

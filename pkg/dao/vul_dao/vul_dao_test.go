@@ -3,7 +3,8 @@ package vul_dao
 import (
 	"context"
 	"github.com/golang-infrastructure/go-pointer"
-	"github.com/scagogogo/sca-base-module-vuls/pkg/domain"
+	"github.com/scagogogo/sca-base-module-vuls/pkg/models"
+
 	"github.com/stretchr/testify/assert"
 	"golang.org/x/text/language"
 	"testing"
@@ -16,8 +17,8 @@ var (
 	testVulCode3 = "vul_code_test_003"
 )
 
-func buildTestVul() *domain.Vul {
-	return &domain.Vul{
+func buildTestVul() *models.Vul {
+	return &models.Vul{
 		VulId: testVulId,
 		CVSS3: "test-cvss3",
 		Title: map[language.Tag]string{
@@ -35,11 +36,11 @@ func buildTestVul() *domain.Vul {
 	}
 }
 
-func buildTestVulCode(code string) *domain.VulCode {
-	return &domain.VulCode{
+func buildTestVulCode(code string) *models.VulCode {
+	return &models.VulCode{
 		VulId:      testVulId,
 		Code:       code,
-		CodeType:   domain.CodeTypeGHSA,
+		CodeType:   models.CodeTypeGHSA,
 		CreateTime: pointer.Now(),
 		UpdateTime: pointer.Now(),
 		ChangeTime: pointer.Now(),
@@ -53,7 +54,7 @@ func ensureClear(t *testing.T, dao VulDao) {
 }
 
 func ensureExists(t *testing.T, dao VulDao) {
-	err := dao.Upsert(context.Background(), buildTestVul(), []*domain.VulCode{buildTestVulCode(testVulCode1)})
+	err := dao.Upsert(context.Background(), buildTestVul(), []*models.VulCode{buildTestVulCode(testVulCode1)})
 	assert.Nil(t, err)
 }
 
@@ -78,7 +79,7 @@ func CreateTest(t *testing.T, dao VulDao) {
 
 	ensureClear(t, dao)
 
-	err := dao.Create(context.Background(), buildTestVul(), []*domain.VulCode{
+	err := dao.Create(context.Background(), buildTestVul(), []*models.VulCode{
 		buildTestVulCode(testVulCode1),
 		buildTestVulCode(testVulCode2),
 	})
@@ -89,7 +90,7 @@ func CreateCodesTest(t *testing.T, dao VulDao) {
 
 	ensureClear(t, dao)
 
-	err := dao.CreateCodes(context.Background(), testVulId, []*domain.VulCode{
+	err := dao.CreateCodes(context.Background(), testVulId, []*models.VulCode{
 		buildTestVulCode(testVulCode3),
 	})
 	assert.Nil(t, err)
@@ -173,7 +174,7 @@ func ReplaceCodesTest(t *testing.T, dao VulDao) {
 
 	ensureClear(t, dao)
 
-	err := dao.ReplaceCodes(context.Background(), testVulId, []*domain.VulCode{
+	err := dao.ReplaceCodes(context.Background(), testVulId, []*models.VulCode{
 		buildTestVulCode(testVulCode1),
 		buildTestVulCode(testVulCode2),
 		buildTestVulCode(testVulCode3),
@@ -184,7 +185,7 @@ func ReplaceCodesTest(t *testing.T, dao VulDao) {
 	assert.Nil(t, err)
 	assert.True(t, len(codes) >= 3)
 
-	err = dao.ReplaceCodes(context.Background(), testVulId, []*domain.VulCode{
+	err = dao.ReplaceCodes(context.Background(), testVulId, []*models.VulCode{
 		buildTestVulCode(testVulCode2),
 		buildTestVulCode(testVulCode3),
 	})
@@ -200,7 +201,7 @@ func UpdateTest(t *testing.T, dao VulDao) {
 
 	ensureClear(t, dao)
 
-	err := dao.Update(context.Background(), buildTestVul(), []*domain.VulCode{
+	err := dao.Update(context.Background(), buildTestVul(), []*models.VulCode{
 		buildTestVulCode(testVulCode1),
 		buildTestVulCode(testVulCode2),
 		buildTestVulCode(testVulCode3),
@@ -213,7 +214,7 @@ func UpsertTest(t *testing.T, dao VulDao) {
 
 	ensureExists(t, dao)
 
-	err := dao.Upsert(context.Background(), buildTestVul(), []*domain.VulCode{
+	err := dao.Upsert(context.Background(), buildTestVul(), []*models.VulCode{
 		buildTestVulCode(testVulCode1),
 		buildTestVulCode(testVulCode2),
 	})
@@ -225,7 +226,7 @@ func UpsertCodesTes(t *testing.T, dao VulDao) {
 
 	ensureExists(t, dao)
 
-	err := dao.UpsertCodes(context.Background(), testVulId, []*domain.VulCode{
+	err := dao.UpsertCodes(context.Background(), testVulId, []*models.VulCode{
 		buildTestVulCode(testVulCode1),
 		buildTestVulCode(testVulCode2),
 		buildTestVulCode(testVulCode3),
