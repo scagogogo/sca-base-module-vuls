@@ -34,7 +34,7 @@ func (x References) FilterByLanguage(language language.Tag) References {
 }
 
 // NewReferencesFromOsv 从OSV的引用中创建sca的支持i18n的引用
-func NewReferencesFromOsv(language language.Tag, osvReferences []*osv_schema.Reference) References {
+func NewReferencesFromOsv(language language.Tag, osvReferences osv_schema.References) References {
 	scaReferences := make(References, len(osvReferences))
 	for i, osvReference := range osvReferences {
 		scaReferences[i] = NewReferenceFromOsv(language, osvReference)
