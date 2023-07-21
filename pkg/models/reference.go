@@ -33,6 +33,15 @@ func (x References) FilterByLanguage(language language.Tag) References {
 	return newReferences
 }
 
+// NewReferencesFromOsv 从OSV的引用中创建sca的支持i18n的引用
+func NewReferencesFromOsv(language language.Tag, osvReferences []*osv_schema.Reference) References {
+	scaReferences := make(References, len(osvReferences))
+	for i, osvReference := range osvReferences {
+		scaReferences[i] = NewReferenceFromOsv(language, osvReference)
+	}
+	return scaReferences
+}
+
 // FilterByType 根据引用文章的类型来过滤
 func (x References) FilterByType(referenceTypes ...osv_schema.ReferenceType) References {
 
@@ -92,6 +101,14 @@ type Reference struct {
 
 var _ sql.Scanner = &Reference{}
 var _ driver.Valuer = &Reference{}
+
+// NewReferenceFromOsv 从OSV的引用中创建sca的支持i18n的引用
+func NewReferenceFromOsv(language language.Tag, reference *osv_schema.Reference) *Reference {
+	return &Reference{
+		Reference: reference,
+		Language:  pointer.ToPointer(language),
+	}
+}
 
 func (x *Reference) Value() (driver.Value, error) {
 	if x == nil {
