@@ -129,6 +129,24 @@ func (x *VulMysqlDao) Find(ctx context.Context, vulId string) (*models.Vul, erro
 	}
 }
 
+func (x *VulMysqlDao) FindByCve(ctx context.Context, cve string) (*models.Vul, error) {
+	db := x.gorm.WithContext(ctx)
+	var vulCode *models.VulCode
+	err := db.Model(&models.VulCode{}).Where("code_type = ? AND code = ?", models.CodeTypeCVE, cve).Scan(&vulCode).Error
+	if err != nil {
+		return nil, err
+	}
+	if vulCode == nil || vulCode.VulId == "" {
+		return nil, nil
+	}
+	var vul *models.Vul
+	err = db.Model(&models.Vul{}).Where("vul_id = ?", vulCode.VulId).Scan(&vul).Error
+	if err != nil {
+		return nil, err
+	}
+	return vul, nil
+}
+
 func (x *VulMysqlDao) FindMany(ctx context.Context, vulIds ...string) ([]*models.Vul, error) {
 	var slice []*models.Vul
 	err := x.gorm.WithContext(ctx).Model(&models.Vul{}).Where("vul_id in ?", vulIds).Scan(&slice).Error

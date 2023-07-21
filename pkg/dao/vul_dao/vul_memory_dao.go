@@ -45,6 +45,11 @@ func (x *VulMemoryDao) Find(ctx context.Context, vulId string) (*models.Vul, err
 	panic("implement me")
 }
 
+func (x *VulMemoryDao) FindByCve(ctx context.Context, cve string) (*models.Vul, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (x *VulMemoryDao) FindMany(ctx context.Context, vulIds ...string) ([]*models.Vul, error) {
 	//TODO implement me
 	panic("implement me")
