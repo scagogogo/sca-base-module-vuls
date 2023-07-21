@@ -15,6 +15,15 @@ type I18nText map[language.Tag]string
 var _ sql.Scanner = &I18nText{}
 var _ driver.Valuer = &I18nText{}
 
+func NewI18nText() I18nText {
+	return make(map[language.Tag]string)
+}
+
+func (x I18nText) Append(language language.Tag, value string) I18nText {
+	x[language] = value
+	return x
+}
+
 func (x I18nText) Value() (driver.Value, error) {
 	if x == nil {
 		return nil, nil
