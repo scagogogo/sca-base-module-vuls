@@ -5,6 +5,7 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"fmt"
+	osv_schema "github.com/scagogogo/osv-schema"
 	"github.com/scagogogo/sca-base-module-vuls/pkg/naming"
 	"time"
 )
@@ -19,7 +20,7 @@ type Vul struct {
 	CVSS3 string `mapstructure:"cvss_v3" json:"cvss_v3,omitempty" yaml:"cvss_v3" db:"cvss_v3" gorm:"column:cvss_v3"`
 
 	// 漏洞的cwe，json的string array
-	CWE []string `mapstructure:"cwe" json:"cwe,omitempty" yaml:"cwe" db:"cwe" gorm:"column:cwe;serializer:json"`
+	CWE osv_schema.Aliases `mapstructure:"cwe" json:"cwe,omitempty" yaml:"cwe" db:"cwe" gorm:"column:cwe;serializer:json"`
 
 	// 漏洞的标题
 	Title I18nText `mapstructure:"title" json:"title,omitempty" yaml:"title" db:"title" gorm:"column:title;serializer:json"`

@@ -25,7 +25,7 @@ func (x I18nText) Append(language language.Tag, value string) I18nText {
 }
 
 func (x I18nText) Value() (driver.Value, error) {
-	if x == nil {
+	if len(x) == 0 {
 		return nil, nil
 	}
 	return json.Marshal(x)
