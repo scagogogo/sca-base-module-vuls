@@ -63,6 +63,19 @@ func (x References) FilterByType(referenceTypes ...osv_schema.ReferenceType) Ref
 	return slice
 }
 
+// ContainsUrl 判断引用中是否包含给定的URL
+func (x References) ContainsUrl(url string) bool {
+	if len(x) == 0 {
+		return false
+	}
+	for _, r := range x {
+		if r.URL == url {
+			return true
+		}
+	}
+	return false
+}
+
 func (x *References) Scan(src any) error {
 	if src == nil {
 		return nil
