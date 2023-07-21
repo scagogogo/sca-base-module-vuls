@@ -3,7 +3,7 @@ module github.com/scagogogo/sca-base-module-vuls
 go 1.19
 
 require (
-	github.com/golang-infrastructure/go-pointer v0.0.4
+	github.com/golang-infrastructure/go-pointer v0.0.5
 	github.com/scagogogo/osv-schema v0.0.1
 	github.com/scagogogo/sca-base-module-config v0.0.0-20230712110232-02d4103517c9
 	github.com/scagogogo/sca-base-module-dao v0.0.0-20230712110723-f53eff3ea25e
