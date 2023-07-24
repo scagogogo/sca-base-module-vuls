@@ -27,6 +27,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/scagogogo/sca-base-module-components v0.0.0-20230724024522-a5a359a4003d // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect

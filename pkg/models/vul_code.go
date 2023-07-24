@@ -45,7 +45,9 @@ type VulCode struct {
 	VulId string `mapstructure:"vul_id" json:"vul_id,omitempty" gorm:"column:vul_id;index:vul_codes,unique"`
 
 	// 漏洞的编号
-	Code string `mapstructure:"code" json:"code,omitempty" gorm:"column:code;index:vul_codes,unique"`
+	// 漏洞 + code 有一个唯一索引
+	// code 自己单独一个唯一索引
+	Code string `mapstructure:"code" json:"code,omitempty" gorm:"column:code;index:vul_codes,unique;index:codes"`
 
 	// 漏洞的编号类型
 	CodeType CodeType `mapstructure:"code_type" json:"code_type,omitempty" gorm:"column:code_type"`

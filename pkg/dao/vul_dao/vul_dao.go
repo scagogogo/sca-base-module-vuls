@@ -26,6 +26,9 @@ type VulDao interface {
 	// FindByCve 根据CVE查询漏洞
 	FindByCve(ctx context.Context, cve string) (*models.Vul, error)
 
+	// FindByCode 根据漏洞代码查询漏洞
+	FindByCode(ctx context.Context, code string, codeType models.CodeType) (*models.Vul, error)
+
 	// FindMany 一次查询多个漏洞信息
 	FindMany(ctx context.Context, vulIds ...string) ([]*models.Vul, error)
 

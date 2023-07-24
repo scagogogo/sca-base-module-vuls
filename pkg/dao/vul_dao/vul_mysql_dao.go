@@ -130,9 +130,13 @@ func (x *VulMysqlDao) Find(ctx context.Context, vulId string) (*models.Vul, erro
 }
 
 func (x *VulMysqlDao) FindByCve(ctx context.Context, cve string) (*models.Vul, error) {
+	return x.FindByCode(ctx, cve, models.CodeTypeCVE)
+}
+
+func (x *VulMysqlDao) FindByCode(ctx context.Context, code string, codeType models.CodeType) (*models.Vul, error) {
 	db := x.gorm.WithContext(ctx)
 	var vulCode *models.VulCode
-	err := db.Model(&models.VulCode{}).Where("code_type = ? AND code = ?", models.CodeTypeCVE, cve).Scan(&vulCode).Error
+	err := db.Model(&models.VulCode{}).Where("code = ? AND code_type = ?", code, codeType).Scan(&vulCode).Error
 	if err != nil {
 		return nil, err
 	}
