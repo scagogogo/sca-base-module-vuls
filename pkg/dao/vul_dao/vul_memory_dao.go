@@ -99,3 +99,8 @@ func (x *VulMemoryDao) LoadAllCodes(ctx context.Context) ([]*models.VulCode, err
 	//TODO implement me
 	panic("implement me")
 }
+
+func (x *VulMemoryDao) ListCodeByType(ctx context.Context, codeType models.CodeType) ([]*models.VulCode, error) {
+	//TODO implement me
+	panic("implement me")
+}

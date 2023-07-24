@@ -55,4 +55,7 @@ type VulDao interface {
 
 	// LoadAllCodes 加载所有的漏洞编号
 	LoadAllCodes(ctx context.Context) ([]*models.VulCode, error)
+
+	// ListCodeByType 根据code的类型列出漏洞编号
+	ListCodeByType(ctx context.Context, codeType models.CodeType) ([]*models.VulCode, error)
 }

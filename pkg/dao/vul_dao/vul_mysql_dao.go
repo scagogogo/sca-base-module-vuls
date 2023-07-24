@@ -276,3 +276,13 @@ func (x *VulMysqlDao) LoadAllCodes(ctx context.Context) ([]*models.VulCode, erro
 		return slice, nil
 	}
 }
+
+func (x *VulMysqlDao) ListCodeByType(ctx context.Context, codeType models.CodeType) ([]*models.VulCode, error) {
+	var slice []*models.VulCode
+	err := x.gorm.WithContext(ctx).Model(&models.VulCode{}).Where("code_type = ?", codeType).Scan(&slice).Error
+	if err != nil {
+		return nil, err
+	} else {
+		return slice, nil
+	}
+}
