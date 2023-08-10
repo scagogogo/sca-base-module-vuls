@@ -168,8 +168,6 @@ github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFR
 github.com/rogpeppe/go-internal v1.9.0 h1:73kH8U+JUqXU8lRuOHeVHaa/SZPifC7BkcraZVejAe8=
 github.com/scagogogo/osv-schema v0.0.1 h1:bI2dbkLLYz29Sb3i/D9BmGnfBKAOqJMojLvv7kub7Xk=
 github.com/scagogogo/osv-schema v0.0.1/go.mod h1:wI1ud64g7iVthLGdi81LECcqWNsxHtqIfiolCI0CaNY=
-github.com/scagogogo/sca-base-module-components v0.0.0-20230724024522-a5a359a4003d h1:PSz7WusctbmVd2X9dkqTgcyX4G/lINwYKC9H3oVJXTM=
-github.com/scagogogo/sca-base-module-components v0.0.0-20230724024522-a5a359a4003d/go.mod h1:qSzNEU8owZwOLKA/iaK90HzDHBxjjpHt3BJ1MhUApIk=
 github.com/scagogogo/sca-base-module-config v0.0.0-20230712110232-02d4103517c9 h1:xGYCbUYV1y0y1HKJ4K6GUTY+9u3aD4Q8iVzzsGg/8mI=
 github.com/scagogogo/sca-base-module-config v0.0.0-20230712110232-02d4103517c9/go.mod h1:RtWi2dRrN137hwaVJ1K/GxzJBxDax8dg3hpdI3qkygk=
 github.com/scagogogo/sca-base-module-dao v0.0.0-20230712110723-f53eff3ea25e h1:YoNTwK+2V4isX1FUdnMorAzuUDiuPTzHOVacjczxVXU=
