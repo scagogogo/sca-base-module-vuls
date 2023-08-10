@@ -51,9 +51,19 @@ func (x *Vul) MergeTitle(language language.Tag, title string) *Vul {
 	return x
 }
 
+func (x *Vul) MergeTitleAll(title I18nText) *Vul {
+	x.Title = x.Title.MergeAll(title)
+	return x
+}
+
 // UpdateTitle 把给定的语言合并到title中，如果已经存在的话则覆盖
 func (x *Vul) UpdateTitle(language language.Tag, title string) *Vul {
 	x.Title = x.Title.Set(language, title)
+	return x
+}
+
+func (x *Vul) UpdateTitleAll(title I18nText) *Vul {
+	x.Title = x.Title.SetAll(title)
 	return x
 }
 
@@ -63,9 +73,19 @@ func (x *Vul) MergeDescription(language language.Tag, description string) *Vul {
 	return x
 }
 
+func (x *Vul) MergeDescriptionAll(description I18nText) *Vul {
+	x.Description = x.Description.MergeAll(description)
+	return x
+}
+
 // UpdateDescription 把给定的语言合并到描述中，如果已经存在的话则覆盖
 func (x *Vul) UpdateDescription(language language.Tag, description string) *Vul {
 	x.Description = x.Description.Set(language, description)
+	return x
+}
+
+func (x *Vul) UpdateDescriptionAll(description I18nText) *Vul {
+	x.Description = x.Description.SetAll(description)
 	return x
 }
 
@@ -83,6 +103,26 @@ func (x *Vul) MergeReferences(language language.Tag, reference *Reference) *Vul 
 	return x
 }
 
+// MergeReferencesAll 把给定的语言合并到引用中，如果已经存在的话则忽略
+func (x *Vul) MergeReferencesAll(references References) *Vul {
+
+	// 把已经存在的做个set先
+	existsReferenceUrlSet := make(map[string]struct{}, 0)
+	for _, reference := range x.References {
+		existsReferenceUrlSet[reference.URL] = struct{}{}
+	}
+
+	// 然后把新增的加进来
+	for _, reference := range references {
+		if _, exists := existsReferenceUrlSet[reference.URL]; exists {
+			continue
+		}
+		x.References = append(x.References, reference)
+	}
+
+	return x
+}
+
 // UpdateReferences 把给定的语言合并到引用中，如果已经存在的话则覆盖
 func (x *Vul) UpdateReferences(language language.Tag, reference *Reference) *Vul {
 
@@ -96,6 +136,35 @@ func (x *Vul) UpdateReferences(language language.Tag, reference *Reference) *Vul
 
 	// 如果不存在的话则新增
 	x.References = append(x.References, reference)
+	return x
+}
+
+// UpdateReferencesAll 更新引用，如果引用已经存在了则覆盖更新，否则新增，在修改引用列表的时候会尽可能的保持其原有顺序
+func (x *Vul) UpdateReferencesAll(references References) *Vul {
+
+	// 把新增的做个map先
+	needUpdateReferenceUrlMap := make(map[string]*Reference, 0)
+	for _, reference := range references {
+		needUpdateReferenceUrlMap[reference.URL] = reference
+	}
+
+	// 然后把需要更新的先更新了，更新的同时要删除被替换掉的reference，防止后面被重复处理
+	for index, reference := range x.References {
+		if newReference, exists := needUpdateReferenceUrlMap[reference.URL]; exists {
+			x.References[index] = newReference
+			delete(needUpdateReferenceUrlMap, reference.URL)
+		}
+	}
+
+	// 然后再把新增的加进来，保持其原有顺序
+	for _, reference := range references {
+		// 只处理没被处理过的，因为可能会有一部分已经存在的url在上一步被处理掉了
+		if _, exists := needUpdateReferenceUrlMap[reference.URL]; !exists {
+			continue
+		}
+		x.References = append(x.References, reference)
+	}
+
 	return x
 }
 

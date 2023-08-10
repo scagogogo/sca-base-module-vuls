@@ -19,28 +19,42 @@ func NewI18nText() I18nText {
 	return make(map[language.Tag]string)
 }
 
+func (x I18nText) MergeAll(i18nText I18nText) I18nText {
+	for language, text := range i18nText {
+		x = x.Merge(language, text)
+	}
+	return x
+}
+
+func (x I18nText) SetAll(i18nText I18nText) I18nText {
+	for language, text := range i18nText {
+		x = x.Set(language, text)
+	}
+	return x
+}
+
 // Merge 仅当给定的language不存在的时候才设置，如果已经存在的话则忽略
-func (x I18nText) Merge(language language.Tag, value string) I18nText {
+func (x I18nText) Merge(language language.Tag, text string) I18nText {
 	if x == nil {
 		x = NewI18nText()
 	}
 	if _, exists := x[language]; !exists {
-		x[language] = value
+		x[language] = text
 	}
 	return x
 }
 
 // Set 不管给定的language存不存在都会更新为value，已经存在的话会被覆盖掉
-func (x I18nText) Set(language language.Tag, value string) I18nText {
+func (x I18nText) Set(language language.Tag, text string) I18nText {
 	if x == nil {
 		x = NewI18nText()
 	}
-	x[language] = value
+	x[language] = text
 	return x
 }
 
-func (x I18nText) Append(language language.Tag, value string) I18nText {
-	x[language] = value
+func (x I18nText) Append(language language.Tag, text string) I18nText {
+	x[language] = text
 	return x
 }
 
