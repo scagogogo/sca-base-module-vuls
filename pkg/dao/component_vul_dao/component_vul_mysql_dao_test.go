@@ -1,7 +1,7 @@
 package component_vul_dao
 
 import (
-	"github.com/scagogogo/sca-base-module-dao/mysql"
+	"github.com/scagogogo/sca-base-module-dao/pkg/mysql"
 	"testing"
 
 	// 初始化创建表之类的

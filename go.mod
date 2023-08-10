@@ -5,14 +5,15 @@ go 1.19
 require (
 	github.com/golang-infrastructure/go-pointer v0.0.5
 	github.com/scagogogo/osv-schema v0.0.1
-	github.com/scagogogo/sca-base-module-config v0.0.0-20230712110232-02d4103517c9
-	github.com/scagogogo/sca-base-module-dao v0.0.0-20230712110723-f53eff3ea25e
+	github.com/scagogogo/sca-base-module-config v0.0.0-20230720021742-5e453ac2ce92
+	github.com/scagogogo/sca-base-module-dao v0.0.0-20230724065312-512b4085e653
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/text v0.11.0
 	gorm.io/gorm v1.25.2
 )
 
 require (
+	github.com/crawler-go-go-go/go-requests v0.0.0-20230525030146-0f17843cff2c // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.1 // indirect
@@ -25,7 +26,7 @@ require (
 	github.com/jmoiron/sqlx v1.3.5 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
-	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
+	github.com/pelletier/go-toml/v2 v2.0.9 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.1 // indirect
@@ -35,6 +36,7 @@ require (
 	github.com/subosito/gotenv v1.4.2 // indirect
 	golang.org/x/sys v0.10.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/driver/mysql v1.5.1 // indirect
 )

@@ -2,7 +2,7 @@ package license_dao
 
 import (
 	"context"
-	"github.com/scagogogo/sca-base-module-dao/mysql"
+	"github.com/scagogogo/sca-base-module-dao/pkg/mysql"
 
 	"github.com/scagogogo/sca-base-module-vuls/pkg/models"
 )
