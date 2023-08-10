@@ -7,6 +7,7 @@ import (
 	"fmt"
 	osv_schema "github.com/scagogogo/osv-schema"
 	"github.com/scagogogo/sca-base-module-vuls/pkg/naming"
+	"golang.org/x/text/language"
 	"time"
 )
 
@@ -42,6 +43,60 @@ type Vul struct {
 	CreateTime *time.Time `mapstructure:"create_time" json:"create_time,omitempty" yaml:"create_time" db:"create_time" gorm:"column:create_time"`
 	UpdateTime *time.Time `mapstructure:"update_time" json:"update_time,omitempty" yaml:"update_time" db:"update_time" gorm:"column:update_time"`
 	ChangeTime *time.Time `mapstructure:"change_time" json:"change_time,omitempty" yaml:"change_time" db:"change_time" gorm:"column:change_time"`
+}
+
+// MergeTitle 把给定的语言合并到title中，如果已经存在的话则忽略
+func (x *Vul) MergeTitle(language language.Tag, title string) *Vul {
+	x.Title = x.Title.Merge(language, title)
+	return x
+}
+
+// UpdateTitle 把给定的语言合并到title中，如果已经存在的话则覆盖
+func (x *Vul) UpdateTitle(language language.Tag, title string) *Vul {
+	x.Title = x.Title.Set(language, title)
+	return x
+}
+
+// MergeDescription 把给定的语言合并到描述中，如果已经存在的话则忽略
+func (x *Vul) MergeDescription(language language.Tag, description string) *Vul {
+	x.Description = x.Description.Merge(language, description)
+	return x
+}
+
+// UpdateDescription 把给定的语言合并到描述中，如果已经存在的话则覆盖
+func (x *Vul) UpdateDescription(language language.Tag, description string) *Vul {
+	x.Description = x.Description.Set(language, description)
+	return x
+}
+
+// MergeReferences 把给定的语言合并到引用中，如果已经存在的话则忽略
+func (x *Vul) MergeReferences(language language.Tag, reference *Reference) *Vul {
+
+	// 先去重，如果已经存在的话则忽略
+	for _, reference := range x.References {
+		if reference.URL == reference.URL {
+			return x
+		}
+	}
+
+	x.References = append(x.References, reference)
+	return x
+}
+
+// UpdateReferences 把给定的语言合并到引用中，如果已经存在的话则覆盖
+func (x *Vul) UpdateReferences(language language.Tag, reference *Reference) *Vul {
+
+	// 如果已经存在的话则更新其值
+	for index, reference := range x.References {
+		if reference.URL == reference.URL {
+			x.References[index] = reference
+			return x
+		}
+	}
+
+	// 如果不存在的话则新增
+	x.References = append(x.References, reference)
+	return x
 }
 
 func (x *Vul) TableName() string {

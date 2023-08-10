@@ -115,6 +115,17 @@ type Reference struct {
 var _ sql.Scanner = &Reference{}
 var _ driver.Valuer = &Reference{}
 
+// NewReference 创建引用类型
+func NewReference(language language.Tag, referenceType osv_schema.ReferenceType, referenceUrl string) *Reference {
+	return &Reference{
+		Reference: &osv_schema.Reference{
+			Type: referenceType,
+			URL:  referenceUrl,
+		},
+		Language: pointer.ToPointer(language),
+	}
+}
+
 // NewReferenceFromOsv 从OSV的引用中创建sca的支持i18n的引用
 func NewReferenceFromOsv(language language.Tag, reference *osv_schema.Reference) *Reference {
 	return &Reference{
